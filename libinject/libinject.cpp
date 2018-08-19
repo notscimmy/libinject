@@ -4,7 +4,7 @@
 #include "InjectionSetWindowsHookEx.h"
 #include "InjectionManualMap.h"
 
-bool InjectSWHEX(DWORD pid, std::string dllPath, int notifyCount)
+bool InjectSetWindowsHookEx(DWORD pid, std::string dllPath, int notifyCount)
 {
 	InjectionSetWindowsHookEx injector(pid, dllPath, notifyCount);
 	return injector.Inject();
