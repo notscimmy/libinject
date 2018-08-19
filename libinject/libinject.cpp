@@ -1,65 +1,53 @@
 #include <Windows.h>
-#include <tlhelp32.h>
 
 #include "libinject.h"
+#include "InjectionSetWindowsHookEx.h"
+#include "InjectionManualMap.h"
 
-#define POST_COUNT 10
-
-DWORD GetThreadID(DWORD pid)
+bool InjectSWHEX(DWORD pid, std::string dllPath, int notifyCount)
 {
-	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
-	if (h != INVALID_HANDLE_VALUE)
-	{
-		THREADENTRY32 te;
-		te.dwSize = sizeof(te);
-		if (Thread32First(h, &te))
-		{
-			do
-			{
-				if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) + sizeof(te.th32OwnerProcessID))
-				{
-					if (te.th32OwnerProcessID == pid)
-						return te.th32ThreadID;
-				}
-			} while (Thread32Next(h, &te));
-		}
-	}
-
-	CloseHandle(h);
-	return NULL;
+	InjectionSetWindowsHookEx injector(pid, dllPath, notifyCount);
+	return injector.Inject();
 }
 
-// the dll to inject must export UnhookProc in order to call UnhookWindowsHookEx
-bool InjectSignedDLL(DWORD pid, const char* dllPath) 
+bool InjectManualMap(DWORD pid, std::string dllPath, InjectionType type)
 {
-	DWORD threadID = GetThreadID(pid);
-	HMODULE hLib = LoadLibraryA(dllPath);
-	if (!hLib)
-		return false;
-
-	LPVOID unhookProc = GetProcAddress(hLib, "UnhookProc");
-	if (!unhookProc)
+	switch (type)
 	{
-		FreeLibrary(hLib);
-		return false;
-	}
+		case InjectionType::CREATE_REMOTE_THREAD:
+		{
+			InjectionManualMap injector(pid, dllPath, true);
+			return injector.Inject();
+		}
 
-	// force our library to be loaded whenever the message loop turns by hooking WH_GETMESSAGE
-	HHOOK hook = SetWindowsHookEx(WH_GETMESSAGE, (HOOKPROC)unhookProc, hLib, threadID);
-	if (!hook)
+		case InjectionType::THREAD_HIJACK:
+		{
+			InjectionManualMap injector(pid, dllPath, false);
+			return injector.Inject();
+		}
+
+		default:
+			return false;
+	}
+}
+
+bool InjectManualMap(DWORD pid, std::vector<unsigned char> buffer, InjectionType type)
+{
+	switch (type)
 	{
-		FreeLibrary(hLib);
-		return false;
-	}
+		case InjectionType::CREATE_REMOTE_THREAD:
+		{
+			InjectionManualMap injector(pid, buffer, true);
+			return injector.Inject();
+		}
 
-	// post a message with our defined id (0x1000) which will unhook what we did above
-	// at that point the dll will have been loaded into our target process
-	for (int i = 0; i < POST_COUNT; i++)
-	{
-		PostThreadMessageA(threadID, 0x1000, 0, (LPARAM)hook);
-		Sleep(100);
-	}
+		case InjectionType::THREAD_HIJACK:
+		{
+			InjectionManualMap injector(pid, buffer, false);
+			return injector.Inject();
+		}
 
-	FreeLibrary(hLib);
-	return true;
+		default:
+			return false;
+	}
 }

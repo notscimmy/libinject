@@ -13,15 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\SetWindowsHookEx">
+      <UniqueIdentifier>{ab44ea47-7738-4311-b64f-7823430fc6e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SetWindowsHookEx">
+      <UniqueIdentifier>{e84c5db4-c615-467a-af2c-d4329ac6f4c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ManualMap">
+      <UniqueIdentifier>{a8a7f03d-ed38-4af4-83e2-5f72b5f0704b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ManualMap">
+      <UniqueIdentifier>{4f32befb-f10e-4362-81f4-4a0c02d2ef8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libinject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InjectionBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InjectionSetWindowsHookEx.cpp">
+      <Filter>Source Files\SetWindowsHookEx</Filter>
+    </ClCompile>
+    <ClCompile Include="InjectionManualMap.cpp">
+      <Filter>Source Files\ManualMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DoublePulsarPayload.cpp">
+      <Filter>Source Files\ManualMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libinject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InjectionBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InjectionSetWindowsHookEx.h">
+      <Filter>Header Files\SetWindowsHookEx</Filter>
+    </ClInclude>
+    <ClInclude Include="InjectionManualMap.h">
+      <Filter>Header Files\ManualMap</Filter>
+    </ClInclude>
+    <ClInclude Include="DoublePulsarPayload.h">
+      <Filter>Header Files\ManualMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

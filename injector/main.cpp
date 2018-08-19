@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
 
 		if (pid != 0)
 		{
-			bool success = InjectSignedDLL(pid, "dummydll.dll");
+			//bool success = InjectSWHEX(pid, "dummydll.dll");
+			bool success = InjectManualMap(pid, "dummydll.dll", InjectionType::THREAD_HIJACK);
 			printf("Inject status: %s\n", success ? "true" : "false");
 		}
 		else

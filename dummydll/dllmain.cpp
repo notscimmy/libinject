@@ -4,6 +4,14 @@ void WorkerThread()
 {
 	while (true)
 	{
+		int* nullPtr = nullptr;
+		try {
+			*nullPtr = 0;
+		}
+		catch (...) {
+			MessageBoxA(NULL, "Exception caught", "DummyDLL", NULL);
+		}
+
 		MessageBoxA(NULL, "Test MessageBox", "DummyDLL", NULL);
 		Sleep(1000);
 	}

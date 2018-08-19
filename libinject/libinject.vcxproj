@@ -19,9 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DoublePulsarPayload.cpp" />
+    <ClCompile Include="InjectionBase.cpp" />
+    <ClCompile Include="InjectionManualMap.cpp" />
+    <ClCompile Include="InjectionSetWindowsHookEx.cpp" />
     <ClCompile Include="libinject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DoublePulsarPayload.h" />
+    <ClInclude Include="InjectionBase.h" />
+    <ClInclude Include="InjectionManualMap.h" />
+    <ClInclude Include="InjectionSetWindowsHookEx.h" />
     <ClInclude Include="libinject.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
