@@ -26,34 +26,38 @@ std::vector<unsigned char> InjectionManualMap::ConstructPayload(std::vector<unsi
 
 bool InjectionManualMap::InjectHelper(std::vector<unsigned char> payload)
 {
+	HANDLE proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, targetPID);
+	if (proc == NULL)
+	{
+		printf("Error opening target process handle\n");
+		return false;
+	}
+
+	LPVOID procMem = VirtualAllocEx(proc, NULL, payload.size(), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	if (procMem == NULL)
+	{
+		printf("Error allocating memory in target process\n");
+		return false;
+	}
+
+	bool wpmResult = WriteProcessMemory(proc, procMem, payload.data(), payload.size(), NULL);
+	if (!wpmResult)
+	{
+		printf("Error writing to target process memory\n");
+		return false;
+	}
+
 	if (useCRT)
 	{
-		// TODO
-		return false;
+		SECURITY_ATTRIBUTES secAttr;
+		secAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+		secAttr.bInheritHandle = FALSE;
+		secAttr.lpSecurityDescriptor = NULL;
+		HANDLE result = CreateRemoteThread(proc, &secAttr, 0, (LPTHREAD_START_ROUTINE)procMem, NULL, 0, NULL);
+		return result ? true : false;
 	}
 	else
 	{
-		HANDLE proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, targetPID);
-		if (proc == NULL)
-		{
-			printf("Error opening target process handle\n");
-			return false;
-		}
-
-		LPVOID procMem = VirtualAllocEx(proc, NULL, payload.size(), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-		if (procMem == NULL)
-		{
-			printf("Error allocating memory in target process\n");
-			return false;
-		}
-
-		bool wpmResult = WriteProcessMemory(proc, procMem, payload.data(), payload.size(), NULL);
-		if (!wpmResult)
-		{
-			printf("Error writing to target process memory\n");
-			return false;
-		}
-
 		HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 
 		// iterate over all threads in the target process
@@ -102,32 +106,17 @@ bool InjectionManualMap::InjectHelper(std::vector<unsigned char> payload)
 
 bool InjectionManualMap::InjectWithBuffer()
 {
-	if (useCRT)
-	{
-		// TODO
-		return false;
-	}
-	else
-	{
-		std::vector<unsigned char> payloadObj = ConstructPayload(buffer);
-		return InjectHelper(payloadObj);
-	}
+	std::vector<unsigned char> payloadObj = ConstructPayload(buffer);
+	return InjectHelper(payloadObj);
 }
 
 bool InjectionManualMap::InjectWithFile()
 {
-	if (useCRT)
-	{
-		// TODO
-		return false;
-	}
-	else
-	{
-		std::vector<unsigned char> fileBytes = GetBytesFromFile(dllPath);
-		std::vector<unsigned char> payloadVector = ConstructPayload(fileBytes);
-		return InjectHelper(payloadVector);
-	}
+	std::vector<unsigned char> fileBytes = GetBytesFromFile(dllPath);
+	std::vector<unsigned char> payloadVector = ConstructPayload(fileBytes);
+	return InjectHelper(payloadVector);
 }
+
 bool InjectionManualMap::Inject()
 {
 	if (dllPath.empty())
