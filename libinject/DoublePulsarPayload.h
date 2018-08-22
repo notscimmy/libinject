@@ -1,3 +1,3 @@
 #pragma once
 
-extern unsigned char doublePulsarPayload[3978];
+extern unsigned char doublePulsarPayload[0xF8A];

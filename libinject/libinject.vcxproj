@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="DoublePulsarPayload.cpp" />
     <ClCompile Include="InjectionBase.cpp" />
+    <ClCompile Include="InjectionLoadLibrary.cpp" />
     <ClCompile Include="InjectionManualMap.cpp" />
     <ClCompile Include="InjectionSetWindowsHookEx.cpp" />
     <ClCompile Include="libinject.cpp" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="DoublePulsarPayload.h" />
     <ClInclude Include="InjectionBase.h" />
+    <ClInclude Include="InjectionLoadLibrary.h" />
     <ClInclude Include="InjectionManualMap.h" />
     <ClInclude Include="InjectionSetWindowsHookEx.h" />
     <ClInclude Include="libinject.h" />

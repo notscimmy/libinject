@@ -25,6 +25,12 @@
     <Filter Include="Source Files\ManualMap">
       <UniqueIdentifier>{4f32befb-f10e-4362-81f4-4a0c02d2ef8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LoadLibrary">
+      <UniqueIdentifier>{4a4efd9b-03d6-42fa-882a-84a4cbbd5d88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LoadLibrary">
+      <UniqueIdentifier>{98ae578e-c9cd-41c2-95d1-af37098d682e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libinject.cpp">
@@ -42,6 +48,9 @@
     <ClCompile Include="DoublePulsarPayload.cpp">
       <Filter>Source Files\ManualMap</Filter>
     </ClCompile>
+    <ClCompile Include="InjectionLoadLibrary.cpp">
+      <Filter>Source Files\LoadLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libinject.h">
@@ -58,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="DoublePulsarPayload.h">
       <Filter>Header Files\ManualMap</Filter>
+    </ClInclude>
+    <ClInclude Include="InjectionLoadLibrary.h">
+      <Filter>Header Files\LoadLibrary</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

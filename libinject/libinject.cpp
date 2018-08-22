@@ -3,6 +3,13 @@
 #include "libinject.h"
 #include "InjectionSetWindowsHookEx.h"
 #include "InjectionManualMap.h"
+#include "InjectionLoadLibrary.h"
+
+bool InjectLoadLibrary(DWORD pid, std::string dllPath)
+{
+	InjectionLoadLibrary injector(pid, dllPath);
+	return injector.Inject();
+}
 
 bool InjectSetWindowsHookEx(DWORD pid, std::string dllPath, int notifyCount)
 {
