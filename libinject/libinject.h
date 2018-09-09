@@ -33,7 +33,7 @@ bool InjectLoadLibrary(DWORD pid, std::string dllPath);
 					   be signalled to be called
 	@return true if injection was successful, false if failed
 */
-bool InjectSetWindowsHookEx(DWORD pid, std::string dllPath, int notifyCount = 0);
+bool InjectSetWindowsHookEx(DWORD pid, std::string dllPath, int notifyCount = 1);
 
 /*
 	Injects the dll at dllPath by using the double pulsar shellcode. This does

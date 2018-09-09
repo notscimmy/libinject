@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
 
 		if (pid != 0)
 		{
-			//bool success = InjectSWHEX(pid, "dummydll.dll");
-			bool success = InjectManualMap(pid, "dummydll.dll", InjectionType::THREAD_HIJACK);
+			bool success = InjectSetWindowsHookEx(pid, "dummydll.dll");
+			//bool success = InjectManualMap(pid, "dummydll.dll", InjectionType::THREAD_HIJACK);
 			printf("Inject status: %s\n", success ? "true" : "false");
 		}
 		else
