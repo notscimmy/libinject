@@ -31,9 +31,10 @@ std::map<std::string, std::vector<DWORD>> GetProcessList()
 
 int main(int argc, char *argv[])
 {
-	if (argc > 1)
+	if (argc > 2)
 	{
 		std::string proc = argv[1];
+		std::string dll_path = argv[2];
 		std::vector<DWORD> pids = GetProcessList()[proc];
 		int injectIndex = -1;
 
@@ -45,8 +46,8 @@ int main(int argc, char *argv[])
 
 			scanf("%d", &injectIndex);
 			if (injectIndex != -1 && injectIndex < pids.size()) {
-				bool success = InjectSetWindowsHookEx(pids[injectIndex], "dummydll.dll");
-				//bool success = InjectManualMap(pid, "dummydll.dll", InjectionType::THREAD_HIJACK);
+				bool success = InjectSetWindowsHookEx(pids[injectIndex], dll_path);
+				//bool success = InjectManualMap(pids[injectIndex], "dummydll.dll", InjectionType::THREAD_HIJACK);
 				printf("Inject status: %s\n", success ? "true" : "false");
 			}
 			else {
@@ -57,6 +58,7 @@ int main(int argc, char *argv[])
 			printf("Unable to find pids for process: %s\n", proc.c_str());
 		}
 	}
-	else
-		printf("Provide a process to inject as the first argument to this program\n");
+	else {
+		printf("Usage: injector.exe PID PATH_TO_DLL\n");
+	}
 }
